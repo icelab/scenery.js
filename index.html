@@ -1,40 +1,40 @@
 <!doctype html>
+<html>
 <head>
+  <meta charset="utf-8">
+  <style>
 
-<style>
-
-.animal {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  transform: none;
-}
-
-  .hare {
-    background: grey;
-    transition: 1s;
+  .animal {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    transform: none;
   }
 
-  .tortoise {
-    background: green;
-    transition: 200ms;
-  }
+    .hare {
+      background: grey;
+      transition: 1s;
+    }
 
-  .tortoise.middle {
-    background: green;
-    transition: 5s;
-  }
+    .tortoise {
+      background: green;
+      transition: 200ms;
+    }
 
-  .animal.middle {
-    transform: translate(800px, 0);
-  }
+    .tortoise.middle {
+      background: green;
+      transition: 5s;
+    }
 
-  .animal.end {
-    transform: translate(0, 0);
-  }
+    .animal.middle {
+      transform: translate(800px, 0);
+    }
 
-</style>
+    .animal.end {
+      transform: translate(0, 0);
+    }
 
+  </style>
 </head>
 <body>
 
@@ -42,21 +42,7 @@
   <div class="animal tortoise"></div>
 
   <script src="scenery.js"></script>
-
-  <script>
-
-    s = new Scenery(document.querySelectorAll('.animal'));
-
-    setTimeout(function() {
-      var afterDelay = function() {
-        console.debug("after delay");
-      }
-
-      s.act('middle').delay(1e3).then(afterDelay).act('end').loop();
-
-    }, 13);
-
-  </script>
+  <script src="application.js"></script>
 
 </body>
 </html>
