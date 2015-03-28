@@ -11,14 +11,87 @@ var Scenery = (function(_els) {
     return this;
   };
 
-  var act = function(sceneName, duration) {
+  // CSS-inspection tools
+
+  function ms(str) {
+    return parseFloat(str) * 1000;
+  }
+
+  function getDuration(node) {
+    var duration;
+    var delay;
+
+    duration = ms(getComputedStyle(node).transitionDuration);
+    delay = ms(getComputedStyle(node).transitionDelay);
+
+    return duration + delay;
+  }
+
+  function getLongestTransitionElement(els, childSelector) {
+    var longest;
+    var duration = 0;
+    var selectedElements;
+
+    var descendants;
+    var total;
+
+    selectedElements = [].slice.call(els);
+
+    Array.prototype.forEach.call(els, function findDescendants(node, i) {
+      descendants = [].slice.call(node.querySelectorAll(childSelector));
+      selectedElements = selectedElements.concat(descendants);
+    });
+
+    Array.prototype.forEach.call(selectedElements, function checkDuration(node) {
+      total = getDuration(node);
+      if (total > duration) {
+        longest = node;
+        duration = total;
+      }
+    });
+
+    return longest;
+  }
+
+  function callAfterTransition(els, callback, childSelector) {
+    childSelector = childSelector || "*";
+
+    if (els.length) {
+      els = [].slice.call(els);
+    } else {
+      els = [els];
+    }
+
+    var target = getLongestTransitionElement(els, childSelector);
+    if(!target) return callback();
+
+    target.addEventListener('transitionend', function end(){
+      callback();
+      target.removeEventListener('transitionend', end);
+    });
+  }
+
+  //  Public interface
+
+  function act(sceneName, duration) {
     var el;
     queue.push({ scene: sceneName, duration: duration });
 
     return this;
-  };
+  }
 
-  var play = function() {
+  function delay(delayLength) {
+    queue.push({ delay: delayLength });
+
+    return this;
+  }
+
+  function loop() {
+    looping = true;
+    play();
+  }
+
+  function play() {
     var el;
     var action;
 
@@ -31,7 +104,7 @@ var Scenery = (function(_els) {
       else {
         return;
       }
-    };
+    }
 
     action = queue[playhead];
 
@@ -57,36 +130,25 @@ var Scenery = (function(_els) {
       if (action.duration) {
         setTimeout(play, action.duration);
       } else {
-        arrival(document.body, play);
+        callAfterTransition(document.body, play);
       }
     }
 
     return this;
-  };
-
-  var delay = function(delayLength) {
-    queue.push({ delay: delayLength });
-
-    return this;
   }
 
-  var then = function(callback) {
+  function then(callback) {
     queue.push({ then: callback.bind(this) });
     return this;
-  }
-
-  var loop = function() {
-    looping = true;
-    play();
   }
 
   _init();
 
   return {
     act: act,
-    play: play,
     delay: delay,
     loop: loop,
+    play: play,
     then: then
   };
 
