@@ -4,18 +4,16 @@ var Scenery = (function(_els) {
   var queue = [];
   var playhead = -1;
   var looping = false;
-  var last_applied_class;
+  var lastAppliedClass;
 
   var _init = function() {
     els = _els;
     return this;
   };
 
-  var act = function(scene_name, duration) {
+  var act = function(sceneName, duration) {
     var el;
-    queue.push({ scene: scene_name, duration: duration });
-
-    console.debug('act', queue);
+    queue.push({ scene: sceneName, duration: duration });
 
     return this;
   };
@@ -50,13 +48,11 @@ var Scenery = (function(_els) {
       for (var i = 0; i < els.length; i++) {
         el = els[i];
 
-
-        el.classList.remove(last_applied_class);
+        el.classList.remove(lastAppliedClass);
         el.classList.add(action.scene);
-
       }
 
-      last_applied_class = action.scene;
+      lastAppliedClass = action.scene;
 
       if (action.duration) {
         setTimeout(play, action.duration);
@@ -68,8 +64,8 @@ var Scenery = (function(_els) {
     return this;
   };
 
-  var delay = function(delay_length) {
-    queue.push({ delay: delay_length });
+  var delay = function(delayLength) {
+    queue.push({ delay: delayLength });
 
     return this;
   }
