@@ -1,0 +1,40 @@
+{
+  "name": "scenery",
+  "version": "1.0.0",
+  "description": "Coordinate your CSS-defined animations/transitions.",
+  "keywords": [
+    "transitionended",
+    "transition"
+  ],
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "build": "./node_modules/.bin/browserify index.js --s Scenery > ./dist/scenery.js",
+    "build-min": "./node_modules/.bin/browserify index.js --s Scenery | ./node_modules/.bin/uglifyjs -c warnings=false > ./dist/scenery.min.js",
+    "build-dist": "npm run build && npm run build-min"
+  },
+  "author": {
+    "name": "Jonathon Bellew",
+    "email": "jonno@jonathonbellew.com"
+  },
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Jonathon Bellew",
+      "email": "jonno@jonathonbellew.com"
+    },
+    {
+      "name": "Max Wheeler",
+      "email": "max@icelab.com.au"
+    }
+  ],
+  "dependencies": {
+    "arrival": "^1.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "uglifyjs": "^2.4.10"
+  }
+}

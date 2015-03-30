@@ -1,0 +1,63 @@
+<!doctype html>
+<head>
+
+<style>
+
+.animal {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  transform: none;
+}
+
+  .hare {
+    background: grey;
+    transition: 1s;
+  }
+
+  .tortoise {
+    background: green;
+    transition: 1200ms;
+  }
+
+  .tortoise.middle {
+    background: green;
+    transition: 5s;
+  }
+
+  .animal.middle {
+    transform: translate(800px, 0);
+  }
+
+  .animal.end {
+    transform: translate(0, 0);
+  }
+
+
+</style>
+
+</head>
+<body>
+
+  <div class="animal hare"></div>
+  <div class="animal tortoise"></div>
+
+  <script src="../dist/scenery.js"></script>
+  <script>
+    var s = new Scenery(document.querySelectorAll('.animal'));
+
+    var afterDelay = function() {
+      console.debug("after delay");
+    }
+
+    s.act('middle').delay(1e3).then(afterDelay).act('end').loop();
+
+    setTimeout(function() {
+      s.play();
+    }, 2e3);
+
+
+  </script>
+
+</body>
+</html>
