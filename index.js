@@ -16,6 +16,7 @@ function Scenery(elements) {
   this.queue = [];
   this.playhead = -1;
   this.looping = false;
+  this.stopping = false;
   this.lastAppliedClassName;
 };
 
@@ -40,6 +41,10 @@ Scenery.prototype.act = function(sceneClassName, duration) {
  */
 
 Scenery.prototype.play = function() {
+  if (this.stopping === true) {
+    this.stopping = false;
+    return this;
+  }
 
   this.playhead += 1;
   if (this.playhead >= this.queue.length) {
@@ -111,6 +116,17 @@ Scenery.prototype.then = function(callback) {
 
 Scenery.prototype.loop = function(looping) {
   this.looping = (looping === false) ? false : true;
+  return this;
+};
+
+/**
+ * Stop the animation after the current queue
+ *
+ * @return {Instance}
+ */
+
+Scenery.prototype.stop = function() {
+  this.stopping = true;
   return this;
 };
 

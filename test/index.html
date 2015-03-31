@@ -57,6 +57,16 @@
       s.play();
     }, 2e3);
 
+    setTimeout(function() {
+      console.log("Stop");
+      s.stop();
+    }, 3e3);
+
+    setTimeout(function() {
+      console.log("Start again");
+      s.play();
+    }, 7e3);
+
 
   </script>
 

@@ -36,7 +36,7 @@
     }
   ],
   "dependencies": {
-    "arrival": "^1.1.0"
+    "arrival": "^1.2.1"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
