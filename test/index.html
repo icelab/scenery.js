@@ -2,36 +2,37 @@
 <head>
 
 <style>
-
 .animal {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  transform: none;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  left: 0;
 }
-
-  .hare {
-    background: grey;
-    transition: 1s;
-  }
-
-  .tortoise {
-    background: green;
-    transition: 1200ms;
-  }
-
-  .tortoise.middle {
-    background: green;
-    transition: 5s;
-  }
-
-  .animal.middle {
-    transform: translate(800px, 0);
-  }
-
-  .animal.end {
-    transform: translate(0, 0);
-  }
+.hare {
+  background: #ccc;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  transition: 0.2s;
+}
+.tortoise {
+  background: green;
+  -webkit-transition: 100ms;
+  -moz-transition: 100ms;
+  transition: 100ms;
+  top: 50px;
+}
+.tortoise.middle {
+  background: green;
+  -webkit-transition: 3s;
+  -moz-transition: 3s;
+  transition: 3s;
+}
+.animal.middle {
+  left: 500px;
+}
+.animal.end {
+  left: 0;
+}
 
 
 </style>
