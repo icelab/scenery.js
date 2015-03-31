@@ -1,3 +1,7 @@
+/**
+ * Utilities
+ */
+
 var arrival = require("arrival");
 
 /**
