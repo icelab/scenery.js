@@ -1,4 +1,4 @@
-// Polyfill function.bind
+// Polyfill function.bind for phantomjs
 require('pbind');
 
 var test = require("tape");
@@ -40,6 +40,15 @@ var cssString = ".animal { \
   left: 0; \
 }";
 
+
+// Config
+var TIMING_THRESHOLD_IN_MILLISECONDS = 50;
+var PX_ACCURACY_THRESHOLD = 10;
+
+function withinThreshold(value, expected, threshold) {
+  return Math.abs(expected - value) <= threshold;
+}
+
 // Set up for each test
 function setUp() {
   // Inject CSS
@@ -65,10 +74,7 @@ function tearDown() {
   wrapperElement.parentNode.removeChild(wrapperElement);
 }
 
-// Config
-var TIMING_THRESHOLD_IN_MILLISECONDS = 50;
-
-test('It should play a single act', {timeout: 10000}, function(t) {
+test('It should play a single act', {timeout: 5000}, function(t) {
   setUp();
   t.plan(1);
   var start = Date.now();
@@ -83,8 +89,74 @@ test('It should play a single act', {timeout: 10000}, function(t) {
   // 3000 = 3s in .tortoise.middle
   setTimeout(function() {
     var style = window.getComputedStyle(wrapperElement.querySelector(".tortoise"))
-    t.equal(style.left, "500px");
+    t.ok(
+      withinThreshold(parseFloat(style.left), 500, PX_ACCURACY_THRESHOLD),
+      ".tortoise is at 500px"
+    );
     tearDown();
-  }, 3000 + TIMING_THRESHOLD_IN_MILLISECONDS);
+  }, 3000);
+
+});
+
+test('It should play a single act with a specific element selector', {timeout: 5000}, function(t) {
+  setUp();
+  t.plan(1);
+  var start = Date.now();
+  var s = new Scenery(wrapperElement.querySelectorAll('.animal'));
+  s.act('middle', {endSelector: '.hare'});
+
+  // Kick things off, but give the DOM time to rerender
+  setTimeout(function() {
+    s.play();
+  }, 0);
+
+  // 200 = 0.2s in .hare.middle
+  setTimeout(function() {
+    var style = window.getComputedStyle(wrapperElement.querySelector(".hare"))
+    t.ok(
+      withinThreshold(parseFloat(style.left), 500, PX_ACCURACY_THRESHOLD),
+      ".hare is at 500px"
+    );
+    tearDown();
+  }, 200);
+
+});
+
+test('It should play multiple acts', {timeout: 10000}, function(t) {
+  setUp();
+  t.plan(2);
+  var start = Date.now();
+  var s = new Scenery(wrapperElement.querySelectorAll('.animal'));
+  var tortoise = wrapperElement.querySelector(".tortoise");
+  s.act('middle').act('end');
+
+  // Kick things off, but give the DOM time to rerender
+  setTimeout(function() {
+    s.play();
+    var start = Date.now();
+    var watchPosition = true;
+    var positions = [
+      {timing: 3000, position: 500, elapsed: 0},
+      {timing: 4000, position: 0, elapsed: 3000}
+    ]
+    var checkPosition = function() {
+      var elapsed = Date.now() - start;
+      var style = window.getComputedStyle(tortoise);
+      var left = parseFloat(style.left);
+
+      var nextPosition = positions[0];
+      if (elapsed > nextPosition.elapsed && withinThreshold(left, nextPosition.position, PX_ACCURACY_THRESHOLD)) {
+        var metTimingThreshold = withinThreshold(elapsed, nextPosition.timing, TIMING_THRESHOLD_IN_MILLISECONDS);
+        if (metTimingThreshold) {
+          t.ok(true, ".tortoise at "+nextPosition.position+"px at "+nextPosition.timing+"s");
+          positions.shift();
+        }
+      }
+      if (positions.length > 0) {
+        setTimeout(checkPosition, 0);
+      }
+    }
+    setTimeout(checkPosition, 0);
+  }, 0);
 
 });
