@@ -29,8 +29,9 @@ function Scenery(elements) {
  * @return {Instance}
  */
 
-Scenery.prototype.act = function(sceneClassName, duration) {
-  this.queue.push({ scene: sceneClassName, duration: duration });
+Scenery.prototype.act = function(sceneClassName, options) {
+  options = options || {};
+  this.queue.push({ scene: sceneClassName, duration: options.duration, endSelector: options.endSelector });
   return this;
 };
 
@@ -77,7 +78,7 @@ Scenery.prototype.play = function() {
     if (action.duration) {
       setTimeout(this.play.bind(this), action.duration);
     } else {
-      arrival(this.elements, this.play.bind(this));
+      arrival(this.elements, this.play.bind(this), action.endSelector);
     }
   }
   return this;

@@ -99,7 +99,6 @@ s.act("one").act("two").then(addNewActs);
 
 // Start the animation queue
 s.play();
-
 ```
 
 ## API
@@ -129,7 +128,10 @@ s.stop();
 
 // Set a specific duration for an "act" in milliseconds. This won’t be
 // affected by `transition-duration` or `transition-delay` properties.
-s.act("act-two-class-name", 2000);
+s.act("act-two-class-name", {duration: 2000});
+
+// Tell Scenery to only watch for end-scene-callbacks on a specific selector.
+s.act("act-two-class-name", {endSelector: ".chorus"});
 ```
 
 ## Limitations
@@ -139,7 +141,6 @@ Scenery uses the [Arrival](https://github.com/icelab/arrival) helper to determin
 
 ## TODO
 
-* Allow selector-scoping per act.
 * Remove acts from the queue.
 
 ## Building
@@ -162,7 +163,7 @@ npm run build-dist # Runs the two above commands
 
 The MIT License (MIT)
 
-Copyright (c) 2015, Jonathon Bellew, Max Wheeler
+Copyright (c) 2015, Icelab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

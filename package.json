@@ -1,6 +1,6 @@
 {
-  "name": "scenery",
-  "version": "1.0.0",
+  "name": "scenery-js",
+  "version": "1.0.1",
   "description": "Coordinate your CSS-defined animations/transitions.",
   "keywords": [
     "transitionended",
@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jonathonbellew/scenery.js.git"
+    "url": "https://github.com/icelab/scenery.js.git"
   },
   "main": "index.js",
   "files": [
@@ -21,8 +21,8 @@
     "test": "./node_modules/.bin/browserify test/*.js | ./node_modules/.bin/testling | ./node_modules/.bin/tap-spec"
   },
   "author": {
-    "name": "Jonathon Bellew",
-    "email": "jonno@jonathonbellew.com"
+    "name": "Icelab",
+    "email": "hello@icelab.com.au"
   },
   "license": "MIT",
   "maintainers": [
